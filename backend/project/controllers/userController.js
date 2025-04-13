@@ -1,7 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModule");
 
-const userLogin = asyncHandler(async (req, res) => {});
+const userLogin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (user && (await user.comparePassword(password))) {
+    res.json({
+      _id: user?.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user?.isAdmin,
+      pic: user?.pic,
+      token: await user.generateJWTToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+});
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
