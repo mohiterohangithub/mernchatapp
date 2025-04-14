@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("../backend/config/db");
 const userRoute = require("./project/router/userRoutes");
+const chatRoute = require("./project/router/chatRoute");
 const pageNotFount = require("./project/middleware/pageNotFountMiddleware");
 const errorHandler = require("./project/middleware/errorMiddleware");
 
@@ -11,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/user", userRoute);
-
+app.use("/chat", chatRoute);
 app.use(pageNotFount);
 app.use(errorHandler);
 const PORT = process.env.PORT;
