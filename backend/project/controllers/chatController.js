@@ -1,6 +1,9 @@
+const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Chat = require("../models/chatModel");
 const User = require("../models/userModule");
+
+const ObjectId = mongoose.Types.ObjectId;
 
 const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;
@@ -9,7 +12,6 @@ const accessChat = asyncHandler(async (req, res) => {
       res.status(401);
       throw new Error("user is missing");
     }
-    // console.log("userId", userId, req.user);
     let isChat = await Chat.findOne({
       isGroupChat: false,
       $and: [
@@ -144,10 +146,55 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     throw new Error(error.message);
   }
 });
+
+const addUserInGroup = asyncHandler(async (req, res) => {
+  const { userId, chatId } = req.body;
+
+  if (!userId && !chatId) {
+    res.status(400);
+    throw new Error("Please send all information");
+  }
+
+  try {
+    let group = await Chat.findById(chatId);
+
+    if (!group.isGroupChat) {
+      res.status(400);
+      throw new Error("This is not a group chat");
+    }
+
+    group = await Chat.findOne({
+      _id: new ObjectId(chatId),
+      users: { $elemMatch: { $eq: new ObjectId(userId) } },
+    });
+
+    if (group) {
+      res.status(400);
+      throw new Error("User Already part of this group");
+    }
+
+    group = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { users: userId },
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("users", "-password")
+      .populate("latestMessage");
+    res.status(200).send(group);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
 module.exports = {
   accessChat,
   fetchAllChats,
   renameOneOnOneChat,
   createGroupChat,
   renameGroupChat,
+  addUserInGroup,
 };
