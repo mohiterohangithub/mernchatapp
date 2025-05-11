@@ -190,6 +190,49 @@ const addUserInGroup = asyncHandler(async (req, res) => {
     throw new Error(error.message);
   }
 });
+
+const removeUserInGroupChat = asyncHandler(async (req, res) => {
+  const { userId, chatId } = req.body;
+
+  if (!userId && !chatId) {
+    res.status(400);
+    throw new Error("Please send all information");
+  }
+
+  try {
+    let group = await Chat.findById(chatId);
+
+    if (!group.isGroupChat) {
+      res.status(400);
+      throw new Error("This is not a group chat");
+    }
+    group = await Chat.findOne({
+      _id: new ObjectId(chatId),
+      users: { $elemMatch: { $eq: new ObjectId(userId) } },
+    });
+
+    if (!group) {
+      res.status(400);
+      throw new Error("User not available in this group");
+    }
+
+    group = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { users: userId },
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("users", "-password")
+      .populate("latestMessage");
+    res.status(200).send(group);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
 module.exports = {
   accessChat,
   fetchAllChats,
@@ -197,4 +240,5 @@ module.exports = {
   createGroupChat,
   renameGroupChat,
   addUserInGroup,
+  removeUserInGroupChat,
 };
