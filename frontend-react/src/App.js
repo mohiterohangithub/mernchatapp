@@ -6,7 +6,8 @@ import "./App.css";
 import AuthContext from "./globleContext/AuthContext";
 
 const ChatHome = lazy(() => import("./screens/chat/ChatHome"));
-const Login = lazy(() => import("./screens/login/Login"));
+const SignIn = lazy(() => import("./screens/login/SignIn"));
+const SignUp = lazy(() => import("./screens/login/SignUp"));
 
 function App() {
   return (
@@ -24,10 +25,18 @@ function App() {
             }
           />
           <Route
-            path="login"
+            path="signin"
             element={
               <Suspense fallback={<div>Loading....!</div>}>
-                <Login />
+                <SignIn />
+              </Suspense>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <Suspense fallback={<div>Loading....!</div>}>
+                <SignUp />
               </Suspense>
             }
           />
