@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const SocketIO = require("socket.io");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -27,6 +28,8 @@ dotenv.config();
 connectDB();
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
 app.use("/user", userRoute);
 app.use("/chat", chatRoute);
@@ -40,7 +43,7 @@ const server = app.listen(
 const io = SocketIO(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 
