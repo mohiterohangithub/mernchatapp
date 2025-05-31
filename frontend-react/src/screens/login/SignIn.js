@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../../utils/axiosInstance";
 import { signin } from "../../utils/webUtils";
 import s from "./signin.module.scss";
+import { AccountCircle, Lock } from "../../accts/iconIndex";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -30,31 +31,39 @@ function SignIn() {
   return (
     <div className={s.container}>
       <div className={s.outer}>
+        <p className={s.Signin}>Login</p>
         <div className={s.fieldWrapper}>
-          <label className={s.label} htmlFor="email">
-            Email:
-          </label>
-          <input
-            className={s.input}
-            type="text"
-            id="email"
-            value={email}
-            onChange={handleChangesEmail}
-          />
-          <label className={s.label} htmlFor="psw">
-            Password:
-          </label>
-          <input
-            className={s.input}
-            type="password"
-            id="psw"
-            name="fname"
-            value={password}
-            onChange={handleChangesPass}
-          />
+          <div className={s.inputWrapper}>
+            <input
+              placeholder="Email"
+              autocomplete="off"
+              className={s.input}
+              type="text"
+              id="email"
+              value={email}
+              onChange={handleChangesEmail}
+            />
+            <AccountCircle width="24px" height="24px" />
+          </div>
+          <div className={s.inputWrapper}>
+            <input
+              placeholder="Password"
+              autocomplete="off"
+              className={s.input}
+              type="password"
+              id="psw"
+              name="fname"
+              value={password}
+              onChange={handleChangesPass}
+            />
+            <Lock width="24px" height="24px" />
+          </div>
         </div>
-        <button onClick={submitLogin}>Submit</button>
-        <button>SignUP</button>
+        <button className={s.login}>Login</button>
+        <div className={s.signup}>
+          <p className={s.text}>Don't have account?</p>
+          <button className={s.reg}>Register</button>
+        </div>
       </div>
     </div>
   );

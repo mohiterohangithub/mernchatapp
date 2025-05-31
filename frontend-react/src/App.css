@@ -1,9 +1,26 @@
+@import "./themes.scss";
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
 }
 .App {
   width: 100vw;
   height: 100vh;
+  background-image: var(--bg-image);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+.moon-sun {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: var(--darkMode-color);
+  cursor: pointer;
 }

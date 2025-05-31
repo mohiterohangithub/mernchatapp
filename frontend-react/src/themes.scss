@@ -1,0 +1,17 @@
+:root {
+  --bg-image: linear-gradient(
+    67deg,
+    rgba(156, 162, 236, 1),
+    rgba(255, 255, 255, 1)
+  );
+  --text-color: #000000cc;
+  --darkMode-color: #fffffff3;
+  --border-color: rgba(1, 1, 1, 0.3);
+}
+
+.dark {
+  --bg-image: linear-gradient(315deg, #003366 0%, #242124 74%);
+  --text-color: #fffffff3;
+  --darkMode-color: #000000cc;
+  --border-color: rgba(255, 255, 255, 0.3);
+}
