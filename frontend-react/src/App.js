@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Index from "./components/Index";
+import { RoundWbSunny } from "./accts/iconIndex";
+import BallPulseLoader from "./components/BallPulseLoader";
 
 import "./App.css";
-import AuthContext from "./globleContext/AuthContext";
-import { RoundWbSunny } from "./accts/iconIndex";
 
 const ChatHome = lazy(() => import("./screens/chat/ChatHome"));
 const SignIn = lazy(() => import("./screens/login/SignIn"));
@@ -13,7 +13,6 @@ const SignUp = lazy(() => import("./screens/login/SignUp"));
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
-    // Check localStorage or default to system preference
     const saved = localStorage.getItem("theme");
     if (saved) return saved === "dark";
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -39,17 +38,15 @@ function App() {
           <Route
             path="chat"
             element={
-              <Suspense fallback={<div>Loading....!</div>}>
-                <AuthContext>
-                  <ChatHome />
-                </AuthContext>
+              <Suspense fallback={<BallPulseLoader />}>
+                <ChatHome />
               </Suspense>
             }
           />
           <Route
             path="signin"
             element={
-              <Suspense fallback={<div>Loading....!</div>}>
+              <Suspense fallback={<BallPulseLoader />}>
                 <SignIn />
               </Suspense>
             }
@@ -57,7 +54,7 @@ function App() {
           <Route
             path="signup"
             element={
-              <Suspense fallback={<div>Loading....!</div>}>
+              <Suspense fallback={<BallPulseLoader/>}>
                 <SignUp />
               </Suspense>
             }

@@ -23,4 +23,5 @@
   right: 24px;
   background-color: var(--darkMode-color);
   cursor: pointer;
+  z-index: 10;
 }

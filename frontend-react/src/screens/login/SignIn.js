@@ -1,15 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useGetAuthToken } from "../../globleContext/AuthContext";
+import { useUserInfo } from "../../globleContext/UserContext";
+
 import api from "../../utils/axiosInstance";
 import { signin } from "../../utils/webUtils";
-import s from "./signin.module.scss";
+import { emailRegex } from "../../utils/constant";
 import { AccountCircle, Lock } from "../../accts/iconIndex";
+import s from "./signin.module.scss";
 
 function SignIn() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(true);
+
+  const { setToken } = useGetAuthToken();
+  const { setUserInfo } = useUserInfo();
 
   const handleChangesEmail = (e) => {
     setEmail(e.target.value);
+    setIsValid(emailRegex.test(e.target.value));
   };
 
   const handleChangesPass = (e) => {
@@ -22,7 +35,20 @@ function SignIn() {
         email,
         password,
       });
-      console.log("response", response);
+      if (response.status === 200 || response.statusText === "OK") {
+        const { _id, email, name, token, pic = null } = response.data;
+        if (token) {
+          setToken(token);
+        }
+        setUserInfo({
+          id: _id,
+          email,
+          name,
+          pic,
+        });
+      } else {
+        console.log("Something went wrong..!");
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -59,10 +85,14 @@ function SignIn() {
             <Lock width="24px" height="24px" />
           </div>
         </div>
-        <button className={s.login}>Login</button>
+        <button onClick={submitLogin} className={s.login}>
+          Login
+        </button>
         <div className={s.signup}>
           <p className={s.text}>Don't have account?</p>
-          <button className={s.reg}>Register</button>
+          <button onClick={() => navigate("/signup")} className={s.reg}>
+            Register
+          </button>
         </div>
       </div>
     </div>

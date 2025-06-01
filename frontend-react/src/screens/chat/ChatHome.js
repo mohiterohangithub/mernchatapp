@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import api from "../../utils/axiosInstance";
 import { useGetAuthToken } from "../../globleContext/AuthContext";
 
+import s from "./ChatHome.module.scss";
+
 function ChatHome() {
   const token = useGetAuthToken();
 
@@ -17,7 +19,7 @@ function ChatHome() {
     );
   }, [token]);
 
-  return <div>ChatHome</div>;
+  return <div className={s.container}>ChatHome</div>;
 }
 
 export default ChatHome;
