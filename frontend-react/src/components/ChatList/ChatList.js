@@ -23,7 +23,7 @@ function ChatList() {
       console.log("error", error);
     }
   }, []);
-  
+
   return (
     <div className={s.container}>
       {userChat.map(({ chatName }) => (

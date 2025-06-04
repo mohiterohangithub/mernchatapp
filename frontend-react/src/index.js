@@ -6,16 +6,19 @@ import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import AuthContext from "./globleContext/AuthContext";
 import UserContext from "./globleContext/UserContext";
+import InfoContext from "./globleContext/InfoContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthContext>
-        <UserContext>
-          <App />
-        </UserContext>
-      </AuthContext>
+      <InfoContext>
+        <AuthContext>
+          <UserContext>
+            <App />
+          </UserContext>
+        </AuthContext>
+      </InfoContext>
     </BrowserRouter>
   </React.StrictMode>
 );

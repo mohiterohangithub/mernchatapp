@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Index from "./components/Index";
+import { useInfoContext } from "./globleContext/InfoContext";
 import { RoundWbSunny } from "./accts/iconIndex";
 import BallPulseLoader from "./components/BallPulseLoader";
 
 import "./App.css";
+import CreateChat from "./components/createChat/CreateChat";
 
 const ChatHome = lazy(() => import("./screens/chat/ChatHome"));
 const SignIn = lazy(() => import("./screens/login/SignIn"));
@@ -17,6 +19,8 @@ function App() {
     if (saved) return saved === "dark";
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
+
+  const { addPopup } = useInfoContext();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -31,11 +35,9 @@ function App() {
   return (
     <div className="App">
       <div className="moon-sun" onClick={() => setDarkMode((pre) => !pre)}>
-        <RoundWbSunny
-          width="24px"
-          height="24px"
-        />
+        <RoundWbSunny width="24px" height="24px" />
       </div>
+      {addPopup.open && <CreateChat />}
       <Routes>
         <Route path="/" element={<Index />}>
           <Route

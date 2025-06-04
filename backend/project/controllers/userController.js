@@ -54,4 +54,14 @@ const register = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { userLogin, register };
+const getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).send(users);
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
+});
+
+module.exports = { userLogin, register, getAllUsers };

@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  max-height: 150px;
+  overflow: auto;
+  gap: 6px;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  .listCard {
+    cursor: pointer;
+    padding: 4px 16px;
+    height: 45px;
+    width: 100%;
+    -webkit-backdrop-filter: blur(12px); /* for Safari */
+    background: rgba(255, 255, 255, 0.1); /* semi-transparent */
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border-radius: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+    .imageWrapper {
+      width: 37px;
+      height: 100%;
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

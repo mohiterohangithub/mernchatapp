@@ -1,0 +1,94 @@
+import { useEffect, useState, useRef } from "react";
+
+import api from "../../utils/axiosInstance";
+import { createChat, getAllUsers } from "../../utils/webUtils";
+import UserList from "./UserList";
+import useOutsideClick from "../../utils/customHooks/useOutsideClick";
+
+import s from "./CreateChat.module.scss";
+
+function CreateChat() {
+  const [user, setUser] = useState({ id: null, name: "" });
+
+  const [allUsers, setAllUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [list, setList] = useState(null);
+  const [popUp, setPopUp] = useState(false);
+  const listRef = useRef(null);
+  useOutsideClick(listRef, () => {
+    setPopUp(false);
+  });
+
+  useEffect(() => {
+    try {
+      const fetchAllUsers = async () => {
+        const res = await api.get(getAllUsers);
+        const data = await res.data;
+        console.log("data", data);
+        setAllUsers([...data]);
+        setList([...data]);
+      };
+      fetchAllUsers();
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (allUsers.length > 0 && search?.length > 1 && popUp) {
+      let newList = allUsers.filter(({ name }) => {
+        if (name.indexOf(search) !== -1) {
+          return true;
+        }
+        return false;
+      });
+      setList(newList);
+    } else {
+      setList(allUsers);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    console.log("user", user);
+    setSearch(user.name);
+  }, [user]);
+
+  const handleCreateChat = async () => {
+    try {
+      const res = await api.post(createChat, {
+        userId: user.id,
+      });
+      console.log("res", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  return (
+    <div className={s.container}>
+      <div className={s.popup}>
+        <p className={s.fnd}>Add Friends</p>
+        <div className={s.inputList} ref={listRef}>
+          <div className={s.inputWrapper}>
+            <input
+              className={s.input}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setPopUp(true)}
+              placeholder="Add contacts"
+              value={search}
+            />
+          </div>
+          {popUp && (
+            <div className={s.list}>
+              <UserList list={list} setUser={setUser} setPopUp={setPopUp} />
+            </div>
+          )}
+        </div>
+        <button onClick={handleCreateChat} className={s.createChat}>
+          Create Chat With Friends
+        </button>
+      </div>
+    </div>
+  );
+}
+export default CreateChat;
