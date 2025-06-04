@@ -31,7 +31,10 @@ function App() {
   return (
     <div className="App">
       <div className="moon-sun" onClick={() => setDarkMode((pre) => !pre)}>
-        <RoundWbSunny width="24px" height="24px" backgroundColor="inherit" />
+        <RoundWbSunny
+          width="24px"
+          height="24px"
+        />
       </div>
       <Routes>
         <Route path="/" element={<Index />}>
@@ -54,7 +57,7 @@ function App() {
           <Route
             path="signup"
             element={
-              <Suspense fallback={<BallPulseLoader/>}>
+              <Suspense fallback={<BallPulseLoader />}>
                 <SignUp />
               </Suspense>
             }
