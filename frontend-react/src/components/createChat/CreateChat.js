@@ -4,6 +4,7 @@ import api from "../../utils/axiosInstance";
 import { createChat, getAllUsers } from "../../utils/webUtils";
 import UserList from "./UserList";
 import useOutsideClick from "../../utils/customHooks/useOutsideClick";
+import { useInfoContext } from "../../globleContext/InfoContext";
 
 import s from "./CreateChat.module.scss";
 
@@ -15,6 +16,10 @@ function CreateChat() {
   const [list, setList] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const listRef = useRef(null);
+  const parentRef = useRef(null);
+
+  const { setAddPopup, setNewChat } = useInfoContext();
+
   useOutsideClick(listRef, () => {
     setPopUp(false);
   });
@@ -24,7 +29,6 @@ function CreateChat() {
       const fetchAllUsers = async () => {
         const res = await api.get(getAllUsers);
         const data = await res.data;
-        console.log("data", data);
         setAllUsers([...data]);
         setList([...data]);
       };
@@ -49,7 +53,6 @@ function CreateChat() {
   }, [search]);
 
   useEffect(() => {
-    console.log("user", user);
     setSearch(user.name);
   }, [user]);
 
@@ -58,7 +61,12 @@ function CreateChat() {
       const res = await api.post(createChat, {
         userId: user.id,
       });
-      console.log("res", res);
+      if (res.status === 200 && res.statusText === "OK") {
+        setAddPopup((pre) => {
+          return { ...pre, open: false };
+        });
+        setNewChat(true);
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -66,7 +74,7 @@ function CreateChat() {
 
   return (
     <div className={s.container}>
-      <div className={s.popup}>
+      <div ref={parentRef} className={s.popup}>
         <p className={s.fnd}>Add Friends</p>
         <div className={s.inputList} ref={listRef}>
           <div className={s.inputWrapper}>

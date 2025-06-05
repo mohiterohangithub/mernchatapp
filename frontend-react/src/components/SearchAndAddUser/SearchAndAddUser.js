@@ -1,9 +1,13 @@
 import { useState } from "react";
-import s from "./SearchAndAddUser.module.scss";
 import { Search, Add } from "../../accts/iconIndex";
+import { useInfoContext } from "../../globleContext/InfoContext";
+
+import s from "./SearchAndAddUser.module.scss";
 
 function SearchAndAddUser() {
   const [userSearch, setUserSearch] = useState("");
+
+  const { setAddPopup } = useInfoContext();
 
   return (
     <div className={s.container}>
@@ -12,7 +16,14 @@ function SearchAndAddUser() {
           <Search width="24px" height="24px" />
         </div>
         <input className={s.input} placeholder="Search Your Chat List" />
-        <div className={s.addIcon}>
+        <div
+          onClick={() =>
+            setAddPopup((pre) => {
+              return { ...pre, open: !pre.open };
+            })
+          }
+          className={s.addIcon}
+        >
           <Add width="24px" height="24px" />
         </div>
       </div>

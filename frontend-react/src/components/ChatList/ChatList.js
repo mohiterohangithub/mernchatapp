@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { fetchAllChats } from "../../utils/webUtils";
 import api from "../../utils/axiosInstance";
 import ChatSelector from "./ChatSelector";
+import { useInfoContext } from "../../globleContext/InfoContext";
 
 import s from "./ChatList.module.scss";
 
 function ChatList() {
   const [userChat, setUserChat] = useState([]);
 
+  const { newChat, setNewChat } = useInfoContext();
+
   useEffect(() => {
     try {
+      if (!newChat) return;
       const fetchAllChat = async () => {
         const response = await api.get(fetchAllChats);
         if (response.status === 200 && response.statusText === "OK") {
@@ -19,15 +23,20 @@ function ChatList() {
         }
       };
       fetchAllChat();
+      setNewChat(false);
     } catch (error) {
       console.log("error", error);
     }
-  }, []);
+  }, [newChat]);
 
   return (
     <div className={s.container}>
-      {userChat.map(({ chatName }) => (
-        <ChatSelector chatName={chatName} />
+      {userChat.map(({ chatName }, index) => (
+        <ChatSelector
+          key={`${chatName}${index}`}
+          chatName={chatName}
+          index={index}
+        />
       ))}
     </div>
   );

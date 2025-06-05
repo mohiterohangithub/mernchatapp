@@ -12,17 +12,12 @@ function InfoContext({ children }) {
     chatType: "",
   });
 
-  useEffect(() => {
-    setTimeout(() => {
-      setAddPopup({
-        open: true,
-        chatType: "",
-      });
-    }, 3000);
-  }, []);
+  const [newChat, setNewChat] = useState(true);
 
   return (
-    <Info.Provider value={{ addPopup, setAddPopup }}>{children}</Info.Provider>
+    <Info.Provider value={{ addPopup, setAddPopup, newChat, setNewChat }}>
+      {children}
+    </Info.Provider>
   );
 }
 

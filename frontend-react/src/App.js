@@ -4,10 +4,10 @@ import { Routes, Route } from "react-router-dom";
 import Index from "./components/Index";
 import { useInfoContext } from "./globleContext/InfoContext";
 import { RoundWbSunny } from "./accts/iconIndex";
+import CreateChat from "./components/createChat/CreateChat";
 import BallPulseLoader from "./components/BallPulseLoader";
 
 import "./App.css";
-import CreateChat from "./components/createChat/CreateChat";
 
 const ChatHome = lazy(() => import("./screens/chat/ChatHome"));
 const SignIn = lazy(() => import("./screens/login/SignIn"));

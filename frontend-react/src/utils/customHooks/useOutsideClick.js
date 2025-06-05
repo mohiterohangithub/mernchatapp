@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 function useOutsideClick(ref, callbackFunc) {
   const outsideclick = (e) => {
+    e.preventDefault();
     if (ref.current && !ref.current.contains(e.target)) {
       callbackFunc();
     }
