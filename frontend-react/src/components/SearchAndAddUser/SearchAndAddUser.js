@@ -4,10 +4,13 @@ import { useInfoContext } from "../../globleContext/InfoContext";
 
 import s from "./SearchAndAddUser.module.scss";
 
-function SearchAndAddUser() {
+function SearchAndAddUser({ searchChat, setSearchChat, userChat }) {
   const [userSearch, setUserSearch] = useState("");
 
   const { setAddPopup } = useInfoContext();
+  const handleSearch = (e) => {
+    setUserSearch(e.target.value);
+  };
 
   return (
     <div className={s.container}>
@@ -15,7 +18,12 @@ function SearchAndAddUser() {
         <div className={s.searchIcon}>
           <Search width="24px" height="24px" />
         </div>
-        <input className={s.input} placeholder="Search Your Chat List" />
+        <input
+          value={userSearch}
+          className={s.input}
+          placeholder="Search Your Chat List"
+          onChange={handleSearch}
+        />
         <div
           onClick={() =>
             setAddPopup((pre) => {

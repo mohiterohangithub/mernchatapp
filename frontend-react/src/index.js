@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import AuthContext from "./globleContext/AuthContext";
 import UserContext from "./globleContext/UserContext";
 import InfoContext from "./globleContext/InfoContext";
+import MessageContext from "./globleContext/MessageContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <InfoContext>
         <AuthContext>
           <UserContext>
-            <App />
+            <MessageContext>
+              <App />
+            </MessageContext>
           </UserContext>
         </AuthContext>
       </InfoContext>

@@ -40,12 +40,13 @@ function SignUp() {
       });
       console.log("response", response);
       if (response.status === 201 || response.statusText === "Created") {
-        const { id, email, name, token, pic = null } = response.data;
+        const { _id, email, name, token, pic = null } = response.data;
+        console.log('response.data', response.data)
         if (token) {
           setToken(token);
         }
         setUserInfo({
-          id: id,
+          _id,
           email,
           name,
           pic,

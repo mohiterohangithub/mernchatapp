@@ -9,6 +9,7 @@ const connectDB = require("../backend/config/db");
 
 const userRoute = require("./project/router/userRoutes");
 const chatRoute = require("./project/router/chatRoute");
+const messageRoute = require("./project/router/messageRoute");
 
 const pageNotFount = require("./project/middleware/pageNotFountMiddleware");
 const errorHandler = require("./project/middleware/errorMiddleware");
@@ -33,6 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/user", userRoute);
 app.use("/chat", chatRoute);
+app.use("/message", messageRoute);
 
 const PORT = process.env.PORT;
 
@@ -84,7 +86,7 @@ io.on("connection", (socket) => {
       chat: chatId,
       readBy: [socket.user._id],
     });
-    socket.to(chatId).emit("receive-private-message", msg.content);
+    socket.to(chatId).emit("receive-private-message", msg);
   });
 
   socket.on("disconnect", () => {

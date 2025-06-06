@@ -1,15 +1,17 @@
-import React, { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import api from "../../utils/axiosInstance";
 import { useGetAuthToken } from "../../globleContext/AuthContext";
-
-import SearchAndAddUser from "../../components/SearchAndAddUser";
-import ChatList from "../../components/ChatList/ChatList";
+import { useUserInfo } from "../../globleContext/UserContext";
+import Chats from "../../components/Chats";
+import { getUserInfo } from "../../utils/webUtils";
+import Message from "../../components/Message";
 
 import s from "./ChatHome.module.scss";
 
 function ChatHome() {
   const { getToken } = useGetAuthToken();
   const token = getToken();
+  const { setUserInfo } = useUserInfo();
   useLayoutEffect(() => {
     api.interceptors.request.use(
       (config) => {
@@ -22,19 +24,24 @@ function ChatHome() {
     );
   }, [token]);
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await api.get(getUserInfo);
+        const userData = await res.data;
+        setUserInfo(userData);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    fetchUserInfo();
+  }, []);
+
   return (
     <div className={s.container}>
       <div className={s.chatContainer}>
-        <div className={s.chatList}>
-          <div className={s.searchInputAddUser}>
-            <SearchAndAddUser />
-          </div>
-          <div className={s.listWrapperParent}>
-            <div className={s.listWrapper}>
-              <ChatList />
-            </div>
-          </div>
-        </div>
+        <Chats />
+        <Message />
       </div>
     </div>
   );

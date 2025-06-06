@@ -64,4 +64,14 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { userLogin, register, getAllUsers };
+const getUserInfo = asyncHandler(async (req, res) => {
+  try {
+    const { user } = req;
+    const USER = await User.findById(user._id).select("-password");
+    res.status(200).send(USER);
+  } catch (error) {
+    throw new error(error.message);
+  }
+});
+
+module.exports = { userLogin, register, getAllUsers, getUserInfo };

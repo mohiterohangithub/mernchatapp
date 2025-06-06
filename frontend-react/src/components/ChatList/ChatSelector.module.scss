@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   height: 65px;
+  cursor: pointer;
   .userInfo {
     display: flex;
     justify-content: flex-start;
@@ -21,7 +22,7 @@
     }
     .userData {
       height: 100%;
-      padding-left: 6px;  
+      padding-left: 6px;
       flex: 1;
       display: flex;
       flex-direction: column;

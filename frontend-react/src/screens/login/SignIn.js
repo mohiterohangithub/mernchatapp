@@ -40,8 +40,9 @@ function SignIn() {
         if (token) {
           setToken(token);
         }
+        console.log("response.data", response.data);
         setUserInfo({
-          id: _id,
+          _id,
           email,
           name,
           pic,

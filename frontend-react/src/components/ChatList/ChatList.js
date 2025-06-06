@@ -1,41 +1,29 @@
-import { useEffect, useState, useRef } from "react";
-
-import { fetchAllChats } from "../../utils/webUtils";
-import api from "../../utils/axiosInstance";
 import ChatSelector from "./ChatSelector";
-import { useInfoContext } from "../../globleContext/InfoContext";
+import { useUserInfo } from "../../globleContext/UserContext";
 
 import s from "./ChatList.module.scss";
 
-function ChatList() {
-  const [userChat, setUserChat] = useState([]);
-
-  const { newChat, setNewChat } = useInfoContext();
-
-  useEffect(() => {
-    try {
-      if (!newChat) return;
-      const fetchAllChat = async () => {
-        const response = await api.get(fetchAllChats);
-        if (response.status === 200 && response.statusText === "OK") {
-          const data = await response?.data;
-          setUserChat([...data]);
-        }
-      };
-      fetchAllChat();
-      setNewChat(false);
-    } catch (error) {
-      console.log("error", error);
+function ChatList({ userChat }) {
+  const { userInfo } = useUserInfo();
+  const getChatName = (chat) => {
+    if (chat.isGroupChat) {
+      return chat.chatName;
+    } else {
+      const friend = chat.users.filter((element) => {
+        return element._id !== userInfo._id;
+      });
+      return friend[0].name;
     }
-  }, [newChat]);
+  };
 
   return (
     <div className={s.container}>
-      {userChat.map(({ chatName }, index) => (
+      {userChat.map((chat, index) => (
         <ChatSelector
-          key={`${chatName}${index}`}
-          chatName={chatName}
+          key={`${chat.chatName}${index}`}
+          ChatName={getChatName(chat)}
           index={index}
+          {...chat}
         />
       ))}
     </div>
