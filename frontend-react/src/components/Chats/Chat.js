@@ -7,7 +7,7 @@ import SearchAndAddUser from "../SearchAndAddUser";
 import ChatList from "../ChatList/ChatList";
 import { useInfoContext } from "../../globleContext/InfoContext";
 
-import s from "./Chats.module.scss";
+import s from "./Chat.module.scss";
 
 function Chat() {
   const [userChat, setUserChat] = useState([]);

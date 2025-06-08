@@ -6,9 +6,9 @@ import api from "../../utils/axiosInstance";
 import Chats from "./Chats";
 import ProfileBar from "./ProfileBar";
 import SendMessage from "./SendMessage";
+import { fetchAllMessages } from "../../utils/webUtils";
 
 import s from "./Message.module.scss";
-import { fetchAllMessages } from "../../utils/webUtils";
 
 function Message() {
   const { selectChat } = useMessageContext();
@@ -28,16 +28,19 @@ function Message() {
     socket.emit("join room", selectChat._id);
     socket.on("receive-private-message", (recodedMsg) => {
       setMessages((pre) => {
-        return [recodedMsg, ...pre];
+        return [...pre, recodedMsg];
       });
     });
   }, [selectChat]);
-    console.log('messages', messages)
   return (
     <div className={s.container}>
-      <ProfileBar />
-      <Chats messages={messages} />
-      <SendMessage />
+      {selectChat && (
+        <>
+          <ProfileBar />
+          <Chats messages={messages} />
+          <SendMessage />
+        </>
+      )}
     </div>
   );
 }

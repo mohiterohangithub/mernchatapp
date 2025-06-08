@@ -11,7 +11,7 @@ function UserContext({ children }) {
     email: "",
     name: "",
     pic: null,
-    id: "",
+    _id: "",
   });
   return (
     <UserContextProvider.Provider value={{ userInfo, setUserInfo }}>

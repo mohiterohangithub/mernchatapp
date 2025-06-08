@@ -80,13 +80,17 @@ io.on("connection", (socket) => {
     if (!chatId && !message) {
       throw new Error("Chat Id or message is missing");
     }
-    const msg = await Message.create({
+    let msg = await Message.create({
       sender: socket.user._id,
       content: message,
       chat: chatId,
       readBy: [socket.user._id],
     });
-    socket.to(chatId).emit("receive-private-message", msg);
+    msg = await Message.populate(msg, {
+      path: "sender",
+      select: "name email",
+    });
+    io.to(chatId).emit("receive-private-message", msg);
   });
 
   socket.on("disconnect", () => {

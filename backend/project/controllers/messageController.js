@@ -18,7 +18,7 @@ const getAllChatFromChatId = asyncHandler(async (req, res) => {
       .sort()
       .populate("sender", "-password")
       .populate("readBy", "-password")
-      .sort({ updatedAt: -1 });
+      .sort({ updatedAt: 1 });
     res.status(200).send(messages);
   } catch (error) {
     throw new Error(error.messages);
