@@ -1,9 +1,11 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const SocketIO = require("socket.io");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 const connectDB = require("../backend/config/db");
 
@@ -31,7 +33,14 @@ const app = express();
 
 app.use(cors());
 
+const uploadsDir = path.join(__dirname, "project", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/user", express.static(path.join(__dirname, "project", "uploads")));
+
 app.use("/user", userRoute);
 app.use("/chat", chatRoute);
 app.use("/message", messageRoute);

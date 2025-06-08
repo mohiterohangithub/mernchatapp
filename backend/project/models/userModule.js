@@ -7,7 +7,7 @@ const userModule = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  pic: { type: String },
+  pic: { path: String, filename: String },
 });
 
 // Hash password before saving
@@ -22,7 +22,7 @@ userModule.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userModule.methods.generateJWTToken =async function () {
+userModule.methods.generateJWTToken = async function () {
   const token = await jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });

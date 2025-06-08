@@ -28,3 +28,6 @@ yarn-error.log*
 
 #dot_env file
 .env
+
+#images
+/project/uploads

@@ -22,12 +22,11 @@ const userLogin = asyncHandler(async (req, res) => {
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
-
+  const { path = "", filename = "" } = req.file;
   if (!name || !email || !password) {
     res.status(400);
     throw new Error("Please entre All the Fields");
   }
-
   const userExists = await User.find({ email });
   if (userExists.length > 0) {
     res.status(400);
@@ -38,7 +37,7 @@ const register = asyncHandler(async (req, res) => {
     name: name,
     email: email,
     password: password,
-    pic: pic,
+    pic: { path, filename },
   });
   if (newUser) {
     const token = await newUser.generateJWTToken();

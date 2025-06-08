@@ -13,6 +13,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [file, setFile] = useState(null);
   const [isValid, setIsValid] = useState(true);
 
   const { setToken } = useGetAuthToken();
@@ -31,17 +32,29 @@ function SignUp() {
     setName(e.target.value);
   };
 
-  const submitRegister = async () => {
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const submitRegister = async (e) => {
     try {
-      const response = await api.post(signup, {
-        name,
-        email,
-        password,
+      e.preventDefault();
+      if (!name || !email || !password) {
+        console.log("All fields are required");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("image", file);
+      const response = await api.post(signup, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log("response", response);
       if (response.status === 201 || response.statusText === "Created") {
         const { _id, email, name, token, pic = null } = response.data;
-        console.log('response.data', response.data)
         if (token) {
           setToken(token);
         }
@@ -98,6 +111,14 @@ function SignUp() {
               name="fname"
               value={password}
               onChange={handleChangesPass}
+            />
+            <Lock width="24px" height="24px" />
+          </div>
+          <div className={s.inputWrapper}>
+            <input
+              className={s.input}
+              type="file"
+              onChange={handleFileChange}
             />
             <Lock width="24px" height="24px" />
           </div>
