@@ -20,6 +20,7 @@ const {
   addUserToOnline,
   removeUserToOnline,
 } = require("./project/utils/onlineUsers");
+const { allowedOrigins } = require("./project/utils/constants");
 
 const User = require("./project/models/userModule");
 const Chat = require("./project/models/chatModel");
@@ -31,7 +32,17 @@ dotenv.config();
 connectDB();
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true); // allow
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 const uploadsDir = path.join(__dirname, "project", "uploads");
 if (!fs.existsSync(uploadsDir)) {
@@ -54,7 +65,13 @@ const server = app.listen(
 const io = SocketIO(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true); // allow
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   },
 });
 
@@ -82,6 +99,10 @@ io.on("connection", (socket) => {
     } else {
       throw new Error("Chat Id or user not belong to chat");
     }
+  });
+
+  socket.on("leave-room", (roomName) => {
+    socket.leave(roomName);
   });
 
   socket.on("send-private-message", async (senderData) => {

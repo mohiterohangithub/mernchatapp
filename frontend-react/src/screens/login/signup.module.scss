@@ -53,6 +53,33 @@
         .input:focus {
           outline: none;
         }
+        .inputFile {
+          width: 100%;
+          flex: 1;
+          border: none;
+           color: transparent;
+        }
+        .inputFile::-webkit-file-upload-button {
+          visibility: hidden;
+        }
+        .inputFile::before {
+          color: inherit;
+          content: "Choose File..";
+          display: inline-block;
+          background: transparent;
+          padding: 5px 8px;
+          outline: none;
+          white-space: nowrap;
+          -webkit-user-select: none;
+          cursor: pointer;
+          text-shadow: 1px 1px #fff;
+          font-weight: 700;
+          font-size: 10pt;
+        }
+        .inputFile::before {
+          border-color: none;
+           color: inherit;
+        }
       }
     }
 

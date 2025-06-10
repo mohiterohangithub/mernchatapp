@@ -116,8 +116,10 @@ function SignUp() {
           </div>
           <div className={s.inputWrapper}>
             <input
-              className={s.input}
+              className={s.inputFile}
+              id="files"
               type="file"
+              name="uploadfile" 
               onChange={handleFileChange}
             />
             <Lock width="24px" height="24px" />

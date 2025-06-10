@@ -27,10 +27,16 @@ function Message() {
     getAllMessages();
     socket.emit("join room", selectChat._id);
     socket.on("receive-private-message", (recodedMsg) => {
-      setMessages((pre) => {
-        return [...pre, recodedMsg];
-      });
+      if (recodedMsg.chat === selectChat._id) {
+        setMessages((pre) => {
+          return [...pre, recodedMsg];
+        });
+      }
     });
+
+    return () => {
+      socket.emit("leave-room", selectChat._id);
+    };
   }, [selectChat]);
   return (
     <div className={s.container}>
