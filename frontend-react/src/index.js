@@ -8,21 +8,24 @@ import AuthContext from "./globleContext/AuthContext";
 import UserContext from "./globleContext/UserContext";
 import InfoContext from "./globleContext/InfoContext";
 import MessageContext from "./globleContext/MessageContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <InfoContext>
-        <AuthContext>
-          <UserContext>
-            <MessageContext>
-              <App />
-            </MessageContext>
-          </UserContext>
-        </AuthContext>
-      </InfoContext>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <InfoContext>
+          <AuthContext>
+            <UserContext>
+              <MessageContext>
+                <App />
+              </MessageContext>
+            </UserContext>
+          </AuthContext>
+        </InfoContext>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 
