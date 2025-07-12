@@ -20,7 +20,7 @@ const {
   addUserToOnline,
   removeUserToOnline,
 } = require("./project/utils/onlineUsers");
-const { allowedOrigins } = require("./project/utils/constants");
+const { urlRegex } = require("./project/utils/constants");
 
 const User = require("./project/models/userModule");
 const Chat = require("./project/models/chatModel");
@@ -35,7 +35,7 @@ const app = express();
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (origin && urlRegex.test(origin)) {
         callback(null, true); // allow
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -66,7 +66,7 @@ const io = SocketIO(server, {
   pingTimeout: 60000,
   cors: {
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (origin && urlRegex.test(origin)) {
         callback(null, true); // allow
       } else {
         callback(new Error("Not allowed by CORS"));

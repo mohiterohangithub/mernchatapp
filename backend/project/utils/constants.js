@@ -1,5 +1,4 @@
-const allowedOrigins = ["http://192.168.1.3:3000", "http://localhost:3000"];
-
+const urlRegex = /^http:\/\/localhost:3\d{3}$/;
 module.exports = {
-  allowedOrigins,
+  urlRegex,
 };
